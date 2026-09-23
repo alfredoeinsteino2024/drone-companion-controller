@@ -40,8 +40,8 @@ void loop() {
   float current_mA = ina219.getCurrent_mA();
   Serial.print("Current: "); Serial.print(current_mA); Serial.println(" mA");
   
-  // Emergency siren pattern if distance is 20cm or more
-  if (distance >= 20) {
+  // Emergency siren pattern if distance is less than 20cm
+  if (distance <= 20) {
     tone(BUZ_PIN, 1000); 
     delay(150);          
     tone(BUZ_PIN, 2000); 
