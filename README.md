@@ -1,8 +1,10 @@
 # Drone Companion Controller 🚁
 
-An Arduino Mega 2560-based drone companion controller firmware and Proteus simulation project developed during my internship at **LET Innovations**.
+An Arduino Mega 2560-based drone companion controller firmware and simulation project developed during my internship at.
 
 This system integrates power monitoring, distance sensing, I2C communication, an audible proximity alarm, and servo payload control to serve as an intelligent onboard companion subsystem.
+
+![LET Innovations internship](docs/LET_combined.png)
 
 ---
 
@@ -13,7 +15,7 @@ This system integrates power monitoring, distance sensing, I2C communication, an
 - **Proximity Sensing:** Ultrasonic distance sensor on a single shared signal pin (trigger and echo on the same line).
 - **Proximity Alarm:** Buzzer plays a two-tone siren when an obstacle is within 20 cm.
 - **Actuation:** Servo motor releases the payload when measured current exceeds 100 mA.
-- **Simulation:** Tested in Proteus ISIS.
+- **Modelling & Simulation:** Basic airframe modelled in 3D from multiple perspectives; control circuit tested in Proteus ISIS.
 
 ---
 
@@ -25,13 +27,27 @@ This system integrates power monitoring, distance sensing, I2C communication, an
 ├── schematics/
 │   └── proteus_simulation.pdsprj        # Proteus ISIS circuit design file
 ├── docs/
-│   └── wiring_diagram.png               # Pinout and schematic reference
+│   ├── LET_combined.png                 # Internship / project photos
+│   ├── modelling_images/
+│   │   └── tinkerCard_images.png        # Airframe model, plan and perspective views
+│   └── wiring/
+│       └── wiring_combined.png          # Wiring and pinout reference
 └── README.md
 ```
 
 ---
 
+## ✈️ Airframe Modelling
+
+A basic plane airframe was modelled in 3D to define where the companion controller, sensors and payload release mechanism would sit. The image below shows the plan view and the model from several different perspectives.
+
+![Airframe model: plan view and multiple perspectives](docs/modelling_images/tinkerCard_images.png)
+
+---
+
 ## 🔌 Pinout & Wiring Guide
+
+![Wiring diagram](docs/wiring/wiring_combined.png)
 
 | Component                 | Arduino Mega 2560 Pin | Description                          |
 |---------------------------|-----------------------|--------------------------------------|
