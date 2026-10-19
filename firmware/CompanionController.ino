@@ -34,7 +34,7 @@ void loop() {
   digitalWrite(SIG_PIN, LOW);
   
   pinMode(SIG_PIN, INPUT);
-  long duration = pulseIn(SIG_PIN, HIGH);
+  long duration = pulseIn(SIG_PIN, HIGH, 30000);
   int distance = duration * (0.034 / 2);
 
   float current_mA = ina219.getCurrent_mA();
