@@ -2,17 +2,18 @@
 
 An Arduino Mega 2560-based drone companion controller firmware and Proteus simulation project developed during my internship at **LET Innovations**.
 
-This system integrates power monitoring, distance sensing, I2C communication, and precise servo payload control to serve as an intelligent onboard companion subsystem.
+This system integrates power monitoring, distance sensing, I2C communication, an audible proximity alarm, and servo payload control to serve as an intelligent onboard companion subsystem.
 
 ---
 
 ## 🛠️ Features & Hardware Integration
 
 - **Microcontroller:** Arduino Mega 2560 (chosen for its ample I/O pins and hardware serial ports).
-- **Power Monitoring:** INA219 sensor for real-time bus voltage, shunt voltage, current, and power tracking over I2C.
-- **Proximity Sensing:** HC-SR04 ultrasonic sensor for precise distance measurement and obstacle/payload clearance detection.
-- **Actuation:** Servo motor control for automated payload release mechanisms.
-- **Simulation:** Fully validated and tested in Proteus ISIS.
+- **Power Monitoring:** INA219 sensor for real-time current measurement over I2C, streamed to the serial monitor.
+- **Proximity Sensing:** Ultrasonic distance sensor on a single shared signal pin (trigger and echo on the same line).
+- **Proximity Alarm:** Buzzer plays a two-tone siren when an obstacle is within 20 cm.
+- **Actuation:** Servo motor releases the payload when measured current exceeds 100 mA.
+- **Simulation:** Tested in Proteus ISIS.
 
 ---
 
@@ -32,13 +33,24 @@ This system integrates power monitoring, distance sensing, I2C communication, an
 
 ## 🔌 Pinout & Wiring Guide
 
-| Component            | Arduino Mega 2560 Pin | Description                 |
-|----------------------|-----------------------|-----------------------------|
-| INA219 (SDA)         | Pin 20 (SDA)          | I2C Data Line               |
-| INA219 (SCL)         | Pin 21 (SCL)          | I2C Clock Line              |
-| HC-SR04 (Trig)       | Pin 9                 | Ultrasonic Trigger Pulse    |
-| HC-SR04 (Echo)       | Pin 8                 | Ultrasonic Echo Return      |
-| Servo Motor (Signal) | Pin 6 (PWM)           | Payload Release Actuation   |
+| Component                 | Arduino Mega 2560 Pin | Description                          |
+|---------------------------|-----------------------|--------------------------------------|
+| INA219 (SDA)              | Pin 20 (SDA)          | I2C Data Line                        |
+| INA219 (SCL)              | Pin 21 (SCL)          | I2C Clock Line                       |
+| Ultrasonic Sensor (SIG)   | Pin 7                 | Shared trigger/echo signal           |
+| Buzzer                    | Pin 5                 | Proximity siren output               |
+| Servo Motor (Signal)      | Pin 9 (PWM)           | Payload release actuation            |
+
+---
+
+## ⚙️ How It Works
+
+Each loop iteration (about every 500 ms plus siren time):
+
+1. Pulses the ultrasonic sensor and converts the echo time to distance in cm.
+2. Reads current from the INA219 and prints it over serial (9600 baud).
+3. If distance is **20 cm or less**, plays a 1000 Hz / 2000 Hz siren on the buzzer.
+4. If current exceeds **100 mA**, moves the servo to 90° to release the payload.
 
 ---
 
@@ -62,13 +74,13 @@ This system integrates power monitoring, distance sensing, I2C communication, an
 
 2. Open `schematics/proteus_simulation.pdsprj` in Proteus ISIS.
 3. Compile the `.ino` sketch in the Arduino IDE (or export the compiled `.hex` file) and load it into the Arduino Mega model within Proteus.
-4. Run the simulation to observe real-time sensor telemetry and servo actuation!
+4. Run the simulation to observe real-time current readings, the buzzer siren, and servo actuation.
 
 ---
 
 ## 💡 Engineering Takeaways
 
-Working on this project pushed me to bridge the gap between firmware logic and hardware simulation. Debugging the I2C bus communications for the INA219 alongside precise timing for the HC-SR04 ultrasonic sensor was a fantastic exercise in robust embedded systems design.
+Working on this project pushed me to bridge the gap between firmware logic and hardware simulation. Debugging the I2C communication with the INA219 alongside the timing of the ultrasonic trigger/echo sequence was a great exercise in robust embedded systems design.
 
 ---
 
